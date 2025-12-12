@@ -8,7 +8,8 @@ export default function CartSidebar({
   updateQuantity,
   removeFromCart,
   getTotalItems,
-  getTotalPrice
+  getTotalPrice,
+  onCheckout
 }) {
   if (!cartOpen) return null;
 
@@ -58,7 +59,12 @@ export default function CartSidebar({
               <div className="flex justify-between items-center mb-4">
                 <span className="text-lg font-semibold">Total: ${getTotalPrice()}</span>
               </div>
-              <button className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors">
+              <button 
+                onClick={() => {
+                  setCartOpen(false);
+                  onCheckout();
+                }}
+                className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors">
                 Checkout
               </button>
             </div>

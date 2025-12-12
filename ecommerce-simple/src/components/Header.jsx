@@ -13,20 +13,34 @@ export default function Header({
 }) {
   const { user, logout } = useAuth();
 
+  const scrollToSection = (sectionId) => {
+    setIsMenuOpen(false);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleLogoClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <div className="text-2xl font-bold text-indigo-600">ShopHub</div>
-          </div>
+          <button 
+            onClick={handleLogoClick}
+            className="text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition-colors cursor-pointer">
+            ShopHub
+          </button>
 
           <nav className="hidden md:flex space-x-8">
-            <a href="#" className="text-gray-700 hover:text-indigo-600 font-medium">Home</a>
-            <a href="#" className="text-gray-700 hover:text-indigo-600 font-medium">Products</a>
-            <a href="#" className="text-gray-700 hover:text-indigo-600 font-medium">Categories</a>
-            <a href="#" className="text-gray-700 hover:text-indigo-600 font-medium">About</a>
-            <a href="#" className="text-gray-700 hover:text-indigo-600 font-medium">Contact</a>
+            <button onClick={() => scrollToSection('hero')} className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">Home</button>
+            <button onClick={() => scrollToSection('products')} className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">Products</button>
+            <button onClick={() => scrollToSection('categories')} className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">Categories</button>
+            <button onClick={() => scrollToSection('features')} className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">About</button>
+            <button onClick={() => scrollToSection('footer')} className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">Contact</button>
           </nav>
 
           <div className="flex items-center space-x-4">
@@ -43,7 +57,7 @@ export default function Header({
 
             <button
               onClick={() => setCartOpen(true)}
-              className="relative p-2 text-gray-700 hover:text-indigo-600"
+              className="relative p-2 text-gray-700 hover:text-indigo-600 transition-colors"
             >
               <ShoppingCart className="h-6 w-6" />
               {getTotalItems() > 0 && (
@@ -58,7 +72,7 @@ export default function Header({
                 <span className="text-sm text-gray-700">{user.name}</span>
                 <button
                   onClick={logout}
-                  className="p-2 text-gray-700 hover:text-red-600"
+                  className="p-2 text-gray-700 hover:text-red-600 transition-colors"
                   title="Logout"
                 >
                   <LogOut className="h-5 w-5" />
@@ -67,7 +81,7 @@ export default function Header({
             ) : (
               <button
                 onClick={onLoginClick}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-semibold"
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm font-semibold transition-colors"
               >
                 Login
               </button>
@@ -83,8 +97,33 @@ export default function Header({
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t">
-            <div className="flex items-center bg-gray-100 rounded-full px-4 py-2">
+          <div className="md:hidden py-4 border-t space-y-2">
+            <button 
+              onClick={() => scrollToSection('hero')}
+              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-100 rounded transition-colors">
+              Home
+            </button>
+            <button 
+              onClick={() => scrollToSection('products')}
+              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-100 rounded transition-colors">
+              Products
+            </button>
+            <button 
+              onClick={() => scrollToSection('categories')}
+              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-100 rounded transition-colors">
+              Categories
+            </button>
+            <button 
+              onClick={() => scrollToSection('features')}
+              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-100 rounded transition-colors">
+              About
+            </button>
+            <button 
+              onClick={() => scrollToSection('footer')}
+              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-100 rounded transition-colors">
+              Contact
+            </button>
+            <div className="flex items-center bg-gray-100 rounded-full px-4 py-2 mt-4">
               <Search className="h-5 w-5 text-gray-400" />
               <input
                 type="text"

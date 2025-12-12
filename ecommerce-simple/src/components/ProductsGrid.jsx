@@ -1,15 +1,35 @@
 import React from 'react';
 import { Star } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
-export default function ProductsGrid({ products, addToCart }) {
+export default function ProductsGrid({ products, addToCart, onProductClick }) {
+  const { user } = useAuth();
+
+  const handleAddToCart = (product, e) => {
+    e.stopPropagation();
+    if (!user) {
+      alert('Debes iniciar sesión para agregar productos al carrito');
+      return;
+    }
+    addToCart(product);
+  };
+
   return (
     <section className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {products.map((product) => (
-            <div key={product.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-              <div className="relative">
-                <img src={product.image} alt={product.name} className="w-full h-64 object-cover" />
+            <div
+              key={product.id}
+              onClick={() => onProductClick(product)}
+              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer group"
+            >
+              <div className="relative overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                />
                 {product.originalPrice > product.price && (
                   <div className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 rounded text-sm font-semibold">
                     SALE
@@ -17,8 +37,8 @@ export default function ProductsGrid({ products, addToCart }) {
                 )}
               </div>
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{product.name}</h3>
-                <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
                 <div className="flex items-center mb-4">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
@@ -34,20 +54,20 @@ export default function ProductsGrid({ products, addToCart }) {
                   </div>
                   <span className="ml-2 text-sm text-gray-600">({product.reviews})</span>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-4">
                   <div>
                     <span className="text-2xl font-bold text-gray-900">${product.price}</span>
                     {product.originalPrice > product.price && (
                       <span className="ml-2 text-gray-500 line-through">${product.originalPrice}</span>
                     )}
                   </div>
-                  <button
-                    onClick={() => addToCart(product)}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors font-medium"
-                  >
-                    Add to Cart
-                  </button>
                 </div>
+                <button
+                  onClick={(e) => handleAddToCart(product, e)}
+                  className="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           ))}
