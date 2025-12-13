@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://proyecto-3-0.onrender.com/api';
 
 export default function Login({ onSwitchToRegister, onClose }) {
   const [email, setEmail] = useState('');
